@@ -20,11 +20,11 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="https://wa.me/6289676064423" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-300 transition hover:border-blue-500 hover:text-blue-400">
+            <a href="https://wa.me/6281337488085" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-300 transition hover:border-blue-500 hover:text-blue-400">
               +62 813 3748 8085
             </a>
 
-            <a href="https://instagram.com/afzainizam" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-300 transition hover:border-blue-500 hover:text-blue-400">
+            <a href="https://instagram.com/nhat.uiel" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900/60 px-5 py-3 text-sm text-zinc-300 transition hover:border-blue-500 hover:text-blue-400">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />

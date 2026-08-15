@@ -2,32 +2,87 @@ import Container from "@/lib/container";
 import FadeUp from "@/components/animations/FadeUp";
 import Reveal from "@/components/animations/Reveal";
 
+import {
+  SiGithub,
+  SiPython,
+  SiPandas,
+  SiNumpy,
+  SiJupyter,
+  SiPostgresql,
+  SiMysql,
+  SiTypescript,
+  SiGit,
+  SiTradingview,
+} from "react-icons/si";
+
+import { VscVscode } from "react-icons/vsc";
+import { TbFileSpreadsheet } from "react-icons/tb";
 
 const techStacks = [
   {
-    title: "Programming",
-    skills: ["Python", "TypeScript", "SQL"],
+    name: "Python",
+    icon: SiPython,
+    color: "text-[#3776AB]",
   },
   {
-    title: "Data Science",
-    skills: ["Pandas", "NumPy", "Scikit-learn", "Matplotlib"],
+    name: "TypeScript",
+    icon: SiTypescript,
+    color: "text-[#3178C6]",
   },
   {
-    title: "Database",
-    skills: ["PostgreSQL", "MySQL"],
+    name: "SQL",
+    icon: TbFileSpreadsheet,
+    color: "text-[#4479A1]",
   },
   {
-    title: "Quantitative Trading",
-    skills: [
-      "Finance Basics",
-      "Backtesting",
-      "Technical Analysis",
-      "Trading View",
-    ],
+    name: "Pandas",
+    icon: SiPandas,
+    color: "text-[#150458]",
   },
   {
-    title: "Tools",
-    skills: ["Git", "GitHub", "VS Code"],
+    name: "NumPy",
+    icon: SiNumpy,
+    color: "text-[#4DABCF]",
+  },
+  {
+    name: "PostgreSQL",
+    icon: SiPostgresql,
+    color: "text-[#4169E1]",
+  },
+  {
+    name: "MySQL",
+    icon: SiMysql,
+    color: "text-[#4479A1]",
+  },
+  {
+    name: "Jupyter Notebook",
+    icon: SiJupyter,
+    color: "text-[#F37626]",
+  },
+  {
+    name: "Excel",
+    icon: TbFileSpreadsheet,
+    color: "text-[#217346]",
+  },
+  {
+    name: "TradingView",
+    icon: SiTradingview,
+    color: "text-[#2962FF]",
+  },
+  {
+    name: "Git",
+    icon: SiGit,
+    color: "text-[#F05032]",
+  },
+  {
+    name: "GitHub",
+    icon: SiGithub,
+    color: "text-white",
+  },
+  {
+    name: "VS Code",
+    icon: VscVscode,
+    color: "text-[#007ACC]",
   },
 ];
 
@@ -42,34 +97,34 @@ export default function TechStack() {
           </p>
 
           <h2 className="max-w-2xl text-4xl font-bold md:text-5xl">
-            Technologies I use to build projects.
+           Tools and technologies I work with.
           </h2>
         </Reveal>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
-          {techStacks.map((stack, index) => (
-            <FadeUp
-              key={stack.title}
-              delay={index * 0.15}
-            >
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-8 transition duration-300 hover:-translate-y-1 hover:border-blue-500">
-                <h3 className="text-2xl font-semibold">
-                  {stack.title}
-                </h3>
+        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+          {techStacks.map((tech, index) => {
+            const Icon = tech.icon;
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {stack.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="rounded-full border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition hover:border-blue-500 hover:text-white"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+            return (
+              <FadeUp
+                key={tech.name}
+                delay={index * 0.05}
+              >
+                <div className="group flex min-h-[120px] flex-col items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-zinc-900">
+
+                  <Icon
+                    size={38}
+                    className={`${tech.color} transition duration-300 group-hover:scale-110`}
+                  />
+
+                  <span className="mt-4 text-sm font-medium text-zinc-300 transition group-hover:text-white">
+                    {tech.name}
+                  </span>
+
                 </div>
-              </div>
-            </FadeUp>
-          ))}
+              </FadeUp>
+            );
+          })}
         </div>
 
       </Container>

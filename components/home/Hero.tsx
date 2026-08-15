@@ -77,9 +77,7 @@ export default function Hero() {
               <button className="rounded-full bg-blue-600 px-7 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-blue-500">
                 View my work
               </button>
-              <button className="rounded-full border border-zinc-700 px-7 py-3 text-white transition-all duration-300 hover:border-blue-500 hover:text-blue-400">
-                Download CV
-              </button>
+            
             </motion.div>
           </motion.div>
 
@@ -116,7 +114,7 @@ export default function Hero() {
               transition={{ delay: 0.8 }}
               className={`${inter.className} relative z-10 mb-2 text-sm uppercase tracking-[0.6em] text-zinc-500`}
             >
-              Portfolio
+            
             </motion.p>
 
             <motion.h2
