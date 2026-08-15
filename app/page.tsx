@@ -8,6 +8,7 @@ import LoadingScreen from "@/components/layout/LoadingScreen";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 
 import Hero from "@/components/home/Hero";
+import SectionDivider from "@/components/home/SectionDivider";
 import About from "@/components/home/About";
 import TechStack from "@/components/home/TechStack";
 import Projects from "@/components/home/Projects";
@@ -28,7 +29,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-   return <LoadingScreen isLoading={loading} />;
+    return <LoadingScreen isLoading={loading} />;
   }
 
   return (
@@ -37,14 +38,34 @@ export default function Home() {
 
       <Navbar />
 
-      <Hero />
-      <About />
-      <TechStack />
-      <Projects />
-      <TradingLab />
-      <Certificates />
-      <Contact />
-      <Footer />
+      <main>
+        {/* HOME */}
+        <Hero />
+
+        {/* MOVING TEXT DIVIDER */}
+        <SectionDivider />
+
+        {/* ABOUT ME */}
+        <About />
+
+        {/* TECH STACK */}
+        <TechStack />
+
+        {/* PROJECTS */}
+        <Projects />
+
+        {/* TRADING LAB */}
+        <TradingLab />
+
+        {/* CERTIFICATES */}
+        <Certificates />
+
+        {/* CONTACT */}
+        <Contact />
+
+        {/* FOOTER */}
+        <Footer />
+      </main>
 
       <Background />
     </>

@@ -18,10 +18,11 @@ interface Dot {
 
 /* =========================================================
    2D ROBOT
-   Based on the provided robot reference
 ========================================================= */
 
-function LoadingRobot() {
+function LoadingRobot({ percent }: { percent: number }) {
+  const isComplete = percent >= 100;
+
   return (
     <motion.div
       initial={{
@@ -46,7 +47,10 @@ function LoadingRobot() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* WHITE BODY */}
+          {/* =================================================
+              WHITE BODY
+          ================================================= */}
+
           <linearGradient
             id="robotWhite"
             x1="0"
@@ -59,7 +63,10 @@ function LoadingRobot() {
             <stop offset="100%" stopColor="#d6d6d6" />
           </linearGradient>
 
-          {/* BLUE MATERIAL */}
+          {/* =================================================
+              BLUE MATERIAL
+          ================================================= */}
+
           <linearGradient
             id="robotBlue"
             x1="0"
@@ -73,7 +80,10 @@ function LoadingRobot() {
             <stop offset="100%" stopColor="#3474d4" />
           </linearGradient>
 
-          {/* SCREEN */}
+          {/* =================================================
+              SCREEN
+          ================================================= */}
+
           <linearGradient
             id="screen"
             x1="0"
@@ -85,7 +95,10 @@ function LoadingRobot() {
             <stop offset="100%" stopColor="#020617" />
           </linearGradient>
 
-          {/* ORB */}
+          {/* =================================================
+              ORB
+          ================================================= */}
+
           <radialGradient id="orb">
             <stop offset="0%" stopColor="#8df4ff" />
             <stop offset="35%" stopColor="#39bdf8" />
@@ -93,16 +106,44 @@ function LoadingRobot() {
             <stop offset="100%" stopColor="#312e81" />
           </radialGradient>
 
-          {/* CHEST LIGHT */}
+          {/* =================================================
+              CHEST LIGHT
+          ================================================= */}
+
           <radialGradient id="chestLight">
             <stop offset="0%" stopColor="#e0ffff" />
             <stop offset="45%" stopColor="#8befff" />
             <stop offset="100%" stopColor="#4bb9ee" />
           </radialGradient>
 
-          {/* GLOW */}
+          {/* =================================================
+              LOADING GLOW
+          ================================================= */}
+
           <filter
-            id="glow"
+            id="loadingGlow"
+            x="-100%"
+            y="-100%"
+            width="300%"
+            height="300%"
+          >
+            <feGaussianBlur
+              stdDeviation="3"
+              result="blur"
+            />
+
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          {/* =================================================
+              COMPLETE GLOW
+          ================================================= */}
+
+          <filter
+            id="completeGlow"
             x="-100%"
             y="-100%"
             width="300%"
@@ -119,7 +160,10 @@ function LoadingRobot() {
             </feMerge>
           </filter>
 
-          {/* SHADOW */}
+          {/* =================================================
+              SHADOW
+          ================================================= */}
+
           <filter
             id="shadow"
             x="-50%"
@@ -173,7 +217,6 @@ function LoadingRobot() {
             ease: "easeInOut",
           }}
         >
-
           {/* ===================================================
               ANTENNA
           =================================================== */}
@@ -206,7 +249,7 @@ function LoadingRobot() {
               cy="23"
               r="10"
               fill="url(#robotBlue)"
-              filter="url(#glow)"
+              filter="url(#loadingGlow)"
               animate={{
                 scale: [1, 1.12, 1],
               }}
@@ -242,20 +285,12 @@ function LoadingRobot() {
           />
 
           {/* ===================================================
-              LEFT ARM — WAVING / GREETING ARM
+              LEFT ARM
           =================================================== */}
 
           <motion.g
             animate={{
-              rotate: [
-                0,
-                -7,
-                5,
-                -9,
-                4,
-                -6,
-                0,
-              ],
+              rotate: [0, -7, 5, -9, 4, -6, 0],
             }}
             transition={{
               duration: 2.2,
@@ -276,9 +311,6 @@ function LoadingRobot() {
               transformOrigin: "100px 193px",
             }}
           >
-
-            {/* SHOULDER */}
-
             <ellipse
               cx="103"
               cy="193"
@@ -287,8 +319,6 @@ function LoadingRobot() {
               fill="url(#robotBlue)"
               transform="rotate(-18 103 193)"
             />
-
-            {/* WHITE UPPER ARM */}
 
             <path
               d="
@@ -303,8 +333,6 @@ function LoadingRobot() {
               strokeLinecap="round"
             />
 
-            {/* BLUE ARM END */}
-
             <ellipse
               cx="48"
               cy="157"
@@ -313,8 +341,6 @@ function LoadingRobot() {
               fill="url(#robotBlue)"
               transform="rotate(27 48 157)"
             />
-
-            {/* ARM HIGHLIGHT */}
 
             <path
               d="
@@ -330,9 +356,7 @@ function LoadingRobot() {
               opacity="0.55"
             />
 
-            {/* =================================================
-                ORB
-            ================================================= */}
+            {/* ORB */}
 
             <motion.g
               animate={{
@@ -345,18 +369,13 @@ function LoadingRobot() {
                 ease: "easeInOut",
               }}
             >
-
-              {/* ORB */}
-
               <circle
                 cx="31"
                 cy="119"
                 r="27"
                 fill="url(#orb)"
-                filter="url(#glow)"
+                filter="url(#loadingGlow)"
               />
-
-              {/* ORBIT 1 */}
 
               <ellipse
                 cx="31"
@@ -369,8 +388,6 @@ function LoadingRobot() {
                 transform="rotate(25 31 119)"
               />
 
-              {/* ORBIT 2 */}
-
               <ellipse
                 cx="31"
                 cy="119"
@@ -382,8 +399,6 @@ function LoadingRobot() {
                 transform="rotate(-30 31 119)"
               />
 
-              {/* ORBIT 3 */}
-
               <ellipse
                 cx="31"
                 cy="119"
@@ -394,8 +409,6 @@ function LoadingRobot() {
                 strokeWidth="4"
                 transform="rotate(90 31 119)"
               />
-
-              {/* ORB NODES */}
 
               <circle
                 cx="-7"
@@ -424,18 +437,14 @@ function LoadingRobot() {
                 r="5"
                 fill="#67e8f9"
               />
-
             </motion.g>
           </motion.g>
 
           {/* ===================================================
-              RIGHT ARM — DOWN
+              RIGHT ARM
           =================================================== */}
 
           <g>
-
-            {/* SHOULDER */}
-
             <ellipse
               cx="274"
               cy="194"
@@ -444,8 +453,6 @@ function LoadingRobot() {
               fill="url(#robotBlue)"
               transform="rotate(22 274 194)"
             />
-
-            {/* WHITE ARM */}
 
             <path
               d="
@@ -460,8 +467,6 @@ function LoadingRobot() {
               strokeLinecap="round"
             />
 
-            {/* BLUE END */}
-
             <ellipse
               cx="308"
               cy="249"
@@ -470,8 +475,6 @@ function LoadingRobot() {
               fill="url(#robotBlue)"
               transform="rotate(55 308 249)"
             />
-
-            {/* ARM HIGHLIGHT */}
 
             <path
               d="
@@ -486,7 +489,6 @@ function LoadingRobot() {
               strokeLinecap="round"
               opacity="0.45"
             />
-
           </g>
 
           {/* ===================================================
@@ -532,7 +534,9 @@ function LoadingRobot() {
             fill="url(#robotBlue)"
           />
 
-          {/* CHEST WHITE LOWER */}
+          {/* ===================================================
+              WHITE LOWER CHEST
+          =================================================== */}
 
           <path
             d="
@@ -551,7 +555,7 @@ function LoadingRobot() {
           />
 
           {/* ===================================================
-              CHEST CENTER LIGHT
+              CHEST LIGHT
           =================================================== */}
 
           <circle
@@ -567,7 +571,7 @@ function LoadingRobot() {
             cy="176"
             r="14"
             fill="url(#chestLight)"
-            filter="url(#glow)"
+            filter="url(#loadingGlow)"
             animate={{
               scale: [1, 1.1, 1],
               opacity: [0.75, 1, 0.75],
@@ -596,7 +600,6 @@ function LoadingRobot() {
               transformOrigin: "184px 108px",
             }}
           >
-
             {/* HEAD SHADOW */}
 
             <rect
@@ -660,117 +663,140 @@ function LoadingRobot() {
               height="82"
               rx="27"
               fill="none"
-              stroke="#38bdf8"
-              strokeWidth="1"
-              opacity="0.18"
+              stroke={
+                isComplete
+                  ? "#22c55e"
+                  : "#38bdf8"
+              }
+              strokeWidth="1.5"
+              opacity="0.45"
             />
 
             {/* =================================================
-                SCREEN CORNER DETAILS
+                SCREEN CORNERS
             ================================================= */}
 
             <path
               d="M101 82 L101 76 L108 76"
               fill="none"
-              stroke="#67e8f9"
+              stroke={
+                isComplete
+                  ? "#4ade80"
+                  : "#67e8f9"
+              }
               strokeWidth="3"
             />
 
             <path
               d="M260 82 L260 76 L253 76"
               fill="none"
-              stroke="#67e8f9"
+              stroke={
+                isComplete
+                  ? "#4ade80"
+                  : "#67e8f9"
+              }
               strokeWidth="3"
             />
 
             <path
               d="M101 143 L101 149 L108 149"
               fill="none"
-              stroke="#67e8f9"
+              stroke={
+                isComplete
+                  ? "#4ade80"
+                  : "#67e8f9"
+              }
               strokeWidth="3"
             />
 
             <path
               d="M260 143 L260 149 L253 149"
               fill="none"
-              stroke="#67e8f9"
+              stroke={
+                isComplete
+                  ? "#4ade80"
+                  : "#67e8f9"
+              }
               strokeWidth="3"
             />
 
             {/* =================================================
-                EYES
+                PIXEL LOADING NUMBER
             ================================================= */}
 
-            <motion.g
-              animate={{
-                scaleY: [
-                  1,
-                  1,
-                  0.08,
-                  1,
-                  1,
-                ],
-              }}
-              transition={{
-                duration: 4.7,
-                repeat: Infinity,
-                times: [
-                  0,
-                  0.78,
-                  0.82,
-                  0.86,
-                  1,
-                ],
-              }}
-              style={{
-                transformOrigin: "184px 108px",
-              }}
-            >
-
-              <ellipse
-                cx="140"
-                cy="108"
-                rx="18"
-                ry="24"
-                fill="#9ff6ff"
-                filter="url(#glow)"
-              />
-
-              <ellipse
-                cx="228"
-                cy="108"
-                rx="18"
-                ry="24"
-                fill="#9ff6ff"
-                filter="url(#glow)"
-              />
-
-            </motion.g>
+            {!isComplete && (
+              <motion.text
+                x="180"
+                y="124"
+                textAnchor="middle"
+                fill="#67e8f9"
+                fontSize="32"
+                fontWeight="900"
+                letterSpacing="1"
+                filter="url(#loadingGlow)"
+                style={{
+                  fontFamily:
+                    '"Courier New", "Lucida Console", monospace',
+                }}
+              >
+                {percent}%
+              </motion.text>
+            )}
 
             {/* =================================================
-                HAPPY MOUTH
+                COMPLETE
             ================================================= */}
 
-            <motion.path
-              d="
-                M145 135
-                Q184 155 223 135
-              "
-              fill="none"
-              stroke="#9ff6ff"
-              strokeWidth="5"
-              strokeLinecap="round"
-              filter="url(#glow)"
+            {isComplete && (
+              <motion.text
+                x="180"
+                y="122"
+                textAnchor="middle"
+                fill="#4ade80"
+                fontSize="23"
+                fontWeight="900"
+                letterSpacing="2"
+                filter="url(#completeGlow)"
+                animate={{
+                  opacity: [1, 0.15, 1],
+                }}
+                transition={{
+                  duration: 0.7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                style={{
+                  fontFamily:
+                    '"Courier New", "Lucida Console", monospace',
+                }}
+              >
+                COMPLETE
+              </motion.text>
+            )}
+
+            {/* =================================================
+                STATUS DOT
+            ================================================= */}
+
+            <motion.circle
+              cx="180"
+              cy="145"
+              r="3"
+              fill={
+                isComplete
+                  ? "#4ade80"
+                  : "#38bdf8"
+              }
               animate={{
-                opacity: [0.7, 1, 0.7],
+                opacity: [0.3, 1, 0.3],
+                scale: [0.8, 1.2, 0.8],
               }}
               transition={{
-                duration: 2,
+                duration: 1,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
             />
-
           </motion.g>
         </motion.g>
       </svg>
@@ -819,6 +845,7 @@ export default function LoadingScreen({
 }: LoadingScreenProps) {
   const [dots, setDots] = useState<Dot[]>([]);
   const [percent, setPercent] = useState(0);
+  const [complete, setComplete] = useState(false);
 
   /* =======================================================
      PARTICLES
@@ -848,20 +875,27 @@ export default function LoadingScreen({
     if (!isLoading) return;
 
     setPercent(0);
+    setComplete(false);
 
     let current = 0;
 
     const timer = setInterval(() => {
-      current += 2;
+      current += 1;
 
-      setPercent(Math.min(current, 100));
+      setPercent(current);
 
       if (current >= 100) {
         clearInterval(timer);
-      }
-    }, 20);
 
-    return () => clearInterval(timer);
+        setTimeout(() => {
+          setComplete(true);
+        }, 150);
+      }
+    }, 32);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [isLoading]);
 
   return (
@@ -888,7 +922,6 @@ export default function LoadingScreen({
             bg-[#05070B]
           "
         >
-
           {/* =================================================
               GRID
           ================================================= */}
@@ -1053,10 +1086,9 @@ export default function LoadingScreen({
               px-6
             "
           >
-
             {/* ROBOT */}
 
-            <LoadingRobot />
+            <LoadingRobot percent={percent} />
 
             {/* =================================================
                 TEXT
@@ -1072,7 +1104,6 @@ export default function LoadingScreen({
                 items-center
               "
             >
-
               <motion.p
                 variants={textItem}
                 className="
@@ -1138,73 +1169,7 @@ export default function LoadingScreen({
                 &nbsp; • &nbsp;
                 Quantitative Trader
               </motion.p>
-
             </motion.div>
-
-            {/* =================================================
-                PROGRESS BAR
-            ================================================= */}
-
-            <div
-              className="
-                mt-10
-                flex
-                w-full
-                max-w-[420px]
-                items-center
-                gap-4
-              "
-            >
-
-              <div
-                className="
-                  h-[5px]
-                  flex-1
-                  overflow-hidden
-                  rounded-full
-                  bg-zinc-800
-                "
-              >
-
-                <motion.div
-                  initial={{
-                    width: "0%",
-                  }}
-                  animate={{
-                    width: "100%",
-                  }}
-                  transition={{
-                    duration: 2,
-                    delay: 0.5,
-                    ease: "easeInOut",
-                  }}
-                  className="
-                    h-full
-                    rounded-full
-                    bg-gradient-to-r
-                    from-cyan-400
-                    via-blue-500
-                    to-indigo-500
-                    shadow-[0_0_20px_rgba(59,130,246,0.9)]
-                  "
-                />
-
-              </div>
-
-              <span
-                className="
-                  w-10
-                  text-right
-                  text-xs
-                  font-semibold
-                  tabular-nums
-                  text-cyan-400
-                "
-              >
-                {percent}%
-              </span>
-
-            </div>
 
             {/* =================================================
                 STATUS
@@ -1220,16 +1185,24 @@ export default function LoadingScreen({
               transition={{
                 delay: 1.2,
               }}
-              className="
-                mt-5
+              className={`
+                mt-10
                 text-[10px]
                 uppercase
                 tracking-[0.45em]
-                text-zinc-600
+                transition-colors
+                duration-300
                 md:text-xs
-              "
+                ${
+                  complete
+                    ? "text-green-400"
+                    : "text-zinc-600"
+                }
+              `}
             >
-              Initializing Experience...
+              {complete
+                ? "SYSTEM READY"
+                : "Initializing Experience..."}
             </motion.p>
 
             {/* =================================================
@@ -1286,7 +1259,6 @@ export default function LoadingScreen({
             >
               © 2026 Muhammad Nihat Ulil Amri
             </motion.p>
-
           </div>
         </motion.div>
       )}
