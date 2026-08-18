@@ -1,361 +1,306 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Container from "@/lib/container";
-import { Mail } from "lucide-react";
+import React from "react";
+import {
+  Mail,
+  Phone,
+} from "lucide-react";
 
-export default function Footer() {
-  const techStack = [
+import {
+  FooterBackgroundGradient,
+  TextHoverEffect,
+} from "@/components/ui/hoover";
+
+function Footer() {
+  const footerLinks = [
     {
-      name: "Python",
-      src: "https://cdn.simpleicons.org/python",
-    },
-    {
-      name: "Pandas",
-      src: "https://cdn.simpleicons.org/pandas",
-    },
-    {
-      name: "NumPy",
-      src: "https://cdn.simpleicons.org/numpy",
-    },
-    {
-      name: "JavaScript",
-      src: "https://cdn.simpleicons.org/javascript",
-    },
-    {
-      name: "TypeScript",
-      src: "https://cdn.simpleicons.org/typescript",
-    },
-    {
-      name: "React",
-      src: "https://cdn.simpleicons.org/react",
-    },
-    {
-      name: "Next.js",
-      src: "https://cdn.simpleicons.org/nextdotjs/white",
-    },
-    {
-      name: "Tailwind CSS",
-      src: "https://cdn.simpleicons.org/tailwindcss",
-    },
-    {
-      name: "Git",
-      src: "https://cdn.simpleicons.org/git",
-    },
-    {
-      name: "GitHub",
-      src: "https://cdn.simpleicons.org/github/white",
-    },
-    {
-      name: "SQL",
-      src: "https://cdn.simpleicons.org/mysql",
-    },
-    {
-      name: "Jupyter",
-      src: "https://cdn.simpleicons.org/jupyter",
+      title: "About Me",
+      links: [
+        {
+          label: "LinkedIn",
+          href: "https://www.linkedin.com/",
+        },
+        {
+          label: "GitHub",
+          href: "https://github.com/",
+        },
+        {
+          label: "Telegram",
+          href: "https://t.me/",
+        },
+      ],
     },
   ];
 
-  const marqueeItems = [...techStack, ...techStack];
+  const contactInfo = [
+    {
+      icon: (
+        <span className="text-[#3ca2fa] text-sm font-bold">
+          IG
+        </span>
+      ),
+      text: "@nhat.uiel",
+      href: "https://instagram.com/nhat.uiel",
+    },
+    {
+      icon: (
+        <Mail
+          size={18}
+          className="text-[#3ca2fa]"
+        />
+      ),
+      text: "nihatulil@gmail.com",
+      href: "mailto:nihatulil@gmail.com",
+    },
+    {
+      icon: (
+        <Phone
+          size={18}
+          className="text-[#3ca2fa]"
+        />
+      ),
+      text: "+62 813 3748 8085",
+      href: "https://wa.me/6281337488085",
+    },
+  ];
 
   return (
     <footer
       id="contact"
-      className="relative overflow-hidden bg-[#05070B]"
+      className="
+        relative
+        m-8
+        h-fit
+        overflow-hidden
+        rounded-3xl
+        bg-[#0F0F11]/10
+      "
     >
-      {/* BACKGROUND */}
-
-      <div
-        className="absolute inset-0 -z-10 opacity-60"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #18181b 1px, transparent 1px), linear-gradient(to bottom, #18181b 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div
-        className="
-          absolute
-          bottom-0
-          left-1/2
-          -z-10
-          h-[400px]
-          w-[400px]
-          -translate-x-1/2
-          translate-y-1/2
-          rounded-full
-          bg-blue-500/20
-          blur-[140px]
-        "
-      />
-
       {/* =====================================================
-          TECH STACK MARQUEE
-          PALING ATAS
+          MAIN CONTENT
       ===================================================== */}
 
-      <div className="relative w-full overflow-hidden py-4">
-        {/* GLOW */}
+      <div className="relative z-40 mx-auto max-w-7xl p-14">
 
         <div
           className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-1/2
-            h-20
-            w-[60%]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-blue-500/10
-            blur-[70px]
+            grid
+            grid-cols-1
+            gap-12
+            pb-12
+            md:grid-cols-2
+            md:gap-8
+            lg:grid-cols-3
+            lg:gap-16
           "
-        />
-
-        {/* LEFT FADE */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            left-0
-            top-0
-            z-10
-            h-full
-            w-24
-            bg-gradient-to-r
-            from-[#05070B]
-            to-transparent
-          "
-        />
-
-        {/* RIGHT FADE */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            right-0
-            top-0
-            z-10
-            h-full
-            w-24
-            bg-gradient-to-l
-            from-[#05070B]
-            to-transparent
-          "
-        />
-
-        {/* MOVING LOGOS */}
-
-        <motion.div
-          className="flex w-max items-center"
-          animate={{
-            x: ["0%", "-50%"],
-          }}
-          transition={{
-            duration: 24,
-            repeat: Infinity,
-            ease: "linear",
-          }}
         >
-          {marqueeItems.map((tech, index) => (
-            <div
-              key={`${tech.name}-${index}`}
-              className="
-                mx-4
-                flex
-                h-12
-                w-12
-                shrink-0
-                items-center
-                justify-center
-                rounded-xl
-                border
-                border-zinc-800
-                bg-zinc-900/80
-                p-2.5
-                opacity-70
-                transition-all
-                duration-300
-                hover:scale-110
-                hover:border-blue-500/60
-                hover:opacity-100
-              "
-              title={tech.name}
-            >
-              <img
-                src={tech.src}
-                alt={tech.name}
-                className="h-7 w-7 object-contain"
-                draggable={false}
-              />
+
+          {/* =================================================
+              BRAND
+          ================================================= */}
+
+          <div className="flex flex-col space-y-4">
+
+            <div className="flex items-center space-x-2">
+
+              <span className="text-[#3ca2fa] text-3xl font-extrabold">
+                ✦
+              </span>
+
+              <span className="text-3xl font-bold text-white">
+                Nihat
+              </span>
+
+            </div>
+
+            <p className="max-w-sm text-sm leading-relaxed text-zinc-400">
+              Data Science student exploring data,
+              quantitative trading, programming, and
+              modern technology.
+            </p>
+
+          </div>
+
+
+          {/* =================================================
+              ABOUT ME
+          ================================================= */}
+
+          {footerLinks.map((section) => (
+            <div key={section.title}>
+
+              <h4 className="mb-6 text-lg font-semibold text-white">
+                {section.title}
+              </h4>
+
+              <ul className="space-y-3">
+
+                {section.links.map((link) => (
+                  <li key={link.label}>
+
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="
+                        text-sm
+                        text-zinc-400
+                        transition-colors
+                        hover:text-[#3ca2fa]
+                      "
+                    >
+                      {link.label}
+                    </a>
+
+                  </li>
+                ))}
+
+              </ul>
+
             </div>
           ))}
-        </motion.div>
-      </div>
 
-      {/* =====================================================
-          CONTACT
-      ===================================================== */}
 
-      <Container>
-        <div className="flex flex-col items-center gap-8 py-12 text-center">
-          {/* TITLE */}
+          {/* =================================================
+              CONTACT ME
+          ================================================= */}
 
           <div>
-            <h2 className="text-3xl font-extrabold text-white md:text-4xl">
-              Let's{" "}
-              <span className="text-blue-500">
-                Collaborate
-              </span>
-            </h2>
 
-            <p className="mt-3 max-w-md text-zinc-400">
-              Open for data science projects, quant research, or just a chat about markets.
-            </p>
+            <h4 className="mb-6 text-lg font-semibold text-white">
+              Contact Me
+            </h4>
+
+            <ul className="space-y-4">
+
+              {contactInfo.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center space-x-3"
+                >
+
+                  {item.icon}
+
+                  <a
+                    href={item.href}
+                    target={
+                      item.href.startsWith("mailto:")
+                        ? undefined
+                        : "_blank"
+                    }
+                    rel={
+                      item.href.startsWith("mailto:")
+                        ? undefined
+                        : "noopener noreferrer"
+                    }
+                    className="
+                      text-sm
+                      text-zinc-400
+                      transition-colors
+                      hover:text-[#3ca2fa]
+                    "
+                  >
+                    {item.text}
+                  </a>
+
+                </li>
+              ))}
+
+            </ul>
+
           </div>
 
-          {/* CONTACT BUTTONS */}
-
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {/* WHATSAPP */}
-
-            <a
-              href="https://wa.me/6281337488085"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                border-zinc-700
-                bg-zinc-900/60
-                px-5
-                py-3
-                text-sm
-                text-zinc-300
-                transition
-                hover:border-blue-500
-                hover:text-blue-400
-              "
-            >
-              +62 813 3748 8085
-            </a>
-
-            {/* INSTAGRAM */}
-
-            <a
-              href="https://instagram.com/nhat.uiel"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                border-zinc-700
-                bg-zinc-900/60
-                px-5
-                py-3
-                text-sm
-                text-zinc-300
-                transition
-                hover:border-blue-500
-                hover:text-blue-400
-              "
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect
-                  x="2"
-                  y="2"
-                  width="20"
-                  height="20"
-                  rx="5"
-                  ry="5"
-                />
-
-                <path
-                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-                />
-
-                <line
-                  x1="17.5"
-                  y1="6.5"
-                  x2="17.51"
-                  y2="6.5"
-                />
-              </svg>
-
-              @nhat.uiel
-            </a>
-
-            {/* EMAIL */}
-
-            <a
-              href="mailto:afzainizam.nf11@gmail.com"
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                border-zinc-700
-                bg-zinc-900/60
-                px-5
-                py-3
-                text-sm
-                text-zinc-300
-                transition
-                hover:border-blue-500
-                hover:text-blue-400
-              "
-            >
-              <Mail size={16} />
-
-              nihatulil@gmail.com
-            </a>
-          </div>
         </div>
-      </Container>
+
+
+        {/* =====================================================
+            DIVIDER
+        ===================================================== */}
+
+        <hr className="my-8 border-t border-gray-700" />
+
+
+        {/* =====================================================
+            FOOTER BOTTOM
+        ===================================================== */}
+
+        <div
+          className="
+            flex
+            flex-col
+            items-center
+            justify-between
+            space-y-4
+            text-sm
+            md:flex-row
+            md:space-y-0
+          "
+        >
+
+          <div className="flex items-center gap-6 text-zinc-500">
+
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-[#3ca2fa]"
+            >
+              LinkedIn
+            </a>
+
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-[#3ca2fa]"
+            >
+              GitHub
+            </a>
+
+            <a
+              href="https://t.me/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-[#3ca2fa]"
+            >
+              Telegram
+            </a>
+
+          </div>
+
+
+          <p className="text-center text-zinc-500 md:text-left">
+            © {new Date().getFullYear()} Muhammad Nihat Ulil Amri.
+            All rights reserved.
+          </p>
+
+        </div>
+
+      </div>
+
 
       {/* =====================================================
-          FOOTER BOTTOM
+          TEXT HOVER EFFECT
       ===================================================== */}
 
-      <div className="border-t border-zinc-800/80">
-        <Container>
-          <div className="flex flex-col items-center gap-5 py-7 text-center">
-            <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.35em] text-zinc-600">
-              <span className="h-px w-8 bg-zinc-800" />
+      <div className="relative z-40 hidden h-[30rem] -mb-36 -mt-52 lg:flex">
 
-              Built with data & curiosity
+        <TextHoverEffect
+          text="Nihat"
+          className="z-50"
+        />
 
-              <span className="h-px w-8 bg-zinc-800" />
-            </div>
-
-            <p className="text-sm text-zinc-500">
-              © {new Date().getFullYear()} Muhammad Nihat Ulil Amri.
-              All rights reserved.
-            </p>
-          </div>
-        </Container>
       </div>
+
+
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
+
+      <FooterBackgroundGradient />
+
     </footer>
   );
 }
+
+export default Footer;

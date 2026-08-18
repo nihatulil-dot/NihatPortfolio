@@ -17,7 +17,30 @@ import Certificates from "@/components/home/Certificates";
 import Contact from "@/components/home/Contact";
 import Footer from "@/components/home/Footer";
 
+
+
+
 export default function Home() {
+
+  useEffect(() => {
+  const shouldScroll =
+    sessionStorage.getItem("scrollToTradingLab");
+
+  if (shouldScroll === "true") {
+    sessionStorage.removeItem("scrollToTradingLab");
+
+    const timer = setTimeout(() => {
+      document
+        .getElementById("trading-lab")
+        ?.scrollIntoView({
+          behavior: "instant",
+          block: "start",
+        });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }
+}, []);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
