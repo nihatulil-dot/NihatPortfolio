@@ -4,6 +4,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type MouseEvent,
 } from "react";
 import { motion } from "framer-motion";
 
@@ -14,43 +15,30 @@ const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Trading Lab", href: "#trading-lab" },
   { label: "Certificates", href: "#certificates" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] =
-    useState("home");
-
-  const [isScrolled, setIsScrolled] =
-    useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [isScrolled, setIsScrolled] = useState(false);
 
   /*
-   * Index item yang sedang paling dekat dengan cursor.
-   *
-   * null = cursor tidak sedang berada di area navbar.
+   * Index item yang paling dekat dengan cursor
    */
-  const [hoveredIndex, setHoveredIndex] =
-    useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   /*
-   * Ref setiap item navbar.
-   *
-   * Digunakan untuk mengetahui posisi cursor
-   * terhadap masing-masing menu.
+   * Ref setiap item navbar
    */
-  const itemRefs = useRef<
-    Array<HTMLAnchorElement | null>
-  >([]);
+  const itemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   /*
-   * Observer lock ketika user melakukan smooth scroll
-   * setelah klik menu.
+   * Lock ketika smooth scroll sedang berjalan
    */
   const isNavigating = useRef(false);
 
-  const navigationTimeout = useRef<
-    ReturnType<typeof setTimeout> | null
-  >(null);
+  const navigationTimeout = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   /* =====================================================
      ACTIVE SECTION OBSERVER
@@ -58,52 +46,36 @@ export default function Navbar() {
 
   useEffect(() => {
     const sections = navItems
-      .map((item) =>
-        document.querySelector(item.href)
-      )
+      .map((item) => document.querySelector(item.href))
       .filter(
-        (section): section is Element =>
-          section !== null
+        (section): section is Element => section !== null
       );
 
     if (!sections.length) return;
 
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-          if (isNavigating.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isNavigating.current) return;
 
-          const visibleSections =
-            entries
-              .filter(
-                (entry) =>
-                  entry.isIntersecting
-              )
-              .sort(
-                (a, b) =>
-                  b.intersectionRatio -
-                  a.intersectionRatio
-              );
+        const visibleSections = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) =>
+              b.intersectionRatio - a.intersectionRatio
+          );
 
-          if (
-            visibleSections.length > 0
-          ) {
-            setActiveSection(
-              visibleSections[0].target.id
-            );
-          }
-        },
-        {
-          root: null,
-          rootMargin:
-            "-20% 0px -55% 0px",
-          threshold: [
-            0.1,
-            0.25,
-            0.5,
-          ],
+        if (visibleSections.length > 0) {
+          setActiveSection(
+            visibleSections[0].target.id
+          );
         }
-      );
+      },
+      {
+        root: null,
+        rootMargin: "-20% 0px -55% 0px",
+        threshold: [0.1, 0.25, 0.5],
+      }
+    );
 
     sections.forEach((section) => {
       observer.observe(section);
@@ -125,23 +97,16 @@ export default function Navbar() {
       if (ticking) return;
 
       window.requestAnimationFrame(() => {
-        setIsScrolled(
-          window.scrollY > 35
-        );
-
+        setIsScrolled(window.scrollY > 35);
         ticking = false;
       });
 
       ticking = true;
     };
 
-    window.addEventListener(
-      "scroll",
-      handleScroll,
-      {
-        passive: true,
-      }
-    );
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     handleScroll();
 
@@ -160,9 +125,7 @@ export default function Navbar() {
   useEffect(() => {
     return () => {
       if (navigationTimeout.current) {
-        clearTimeout(
-          navigationTimeout.current
-        );
+        clearTimeout(navigationTimeout.current);
       }
     };
   }, []);
@@ -172,40 +135,31 @@ export default function Navbar() {
   ====================================================== */
 
   const handleDockMouseMove = (
-    e: React.MouseEvent<HTMLElement>
+    e: MouseEvent<HTMLElement>
   ) => {
     const mouseX = e.clientX;
 
     let closestIndex = -1;
     let closestDistance = Infinity;
 
-    itemRefs.current.forEach(
-      (item, index) => {
-        if (!item) return;
+    itemRefs.current.forEach((item, index) => {
+      if (!item) return;
 
-        const rect =
-          item.getBoundingClientRect();
+      const rect = item.getBoundingClientRect();
 
-        const centerX =
-          rect.left + rect.width / 2;
+      const centerX =
+        rect.left + rect.width / 2;
 
-        const distance = Math.abs(
-          mouseX - centerX
-        );
+      const distance = Math.abs(
+        mouseX - centerX
+      );
 
-        if (
-          distance < closestDistance
-        ) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
       }
-    );
+    });
 
-    /*
-     * Hanya aktif kalau cursor cukup dekat
-     * dengan area menu.
-     */
     if (
       closestIndex !== -1 &&
       closestDistance < 90
@@ -224,9 +178,7 @@ export default function Navbar() {
      SCALE CALCULATION
   ====================================================== */
 
-  const getItemScale = (
-    index: number
-  ) => {
+  const getItemScale = (index: number) => {
     if (hoveredIndex === null) {
       return 1;
     }
@@ -235,36 +187,18 @@ export default function Navbar() {
       index - hoveredIndex
     );
 
-    /*
-     * Item yang kena cursor:
-     *
-     * 1.00 -> 1.35
-     */
     if (distance === 0) {
       return 1.35;
     }
 
-    /*
-     * Tetangga langsung:
-     *
-     * 1.00 -> 1.15
-     */
     if (distance === 1) {
       return 1.15;
     }
 
-    /*
-     * Tetangga kedua:
-     *
-     * 1.00 -> 1.06
-     */
     if (distance === 2) {
       return 1.06;
     }
 
-    /*
-     * Sisanya normal.
-     */
     return 1;
   };
 
@@ -273,7 +207,7 @@ export default function Navbar() {
   ====================================================== */
 
   const handleNavigation = (
-    e: React.MouseEvent<HTMLAnchorElement>,
+    e: MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
     e.preventDefault();
@@ -286,29 +220,26 @@ export default function Navbar() {
     const id = href.replace("#", "");
 
     /*
-     * Active state langsung berubah.
+     * Active state langsung berubah
      */
     setActiveSection(id);
 
     /*
      * Lock observer sementara smooth scroll
-     * sedang berjalan.
+     * sedang berjalan
      */
     isNavigating.current = true;
 
     if (navigationTimeout.current) {
-      clearTimeout(
-        navigationTimeout.current
-      );
+      clearTimeout(navigationTimeout.current);
     }
 
-    navigationTimeout.current =
-      setTimeout(() => {
-        isNavigating.current = false;
-      }, 900);
+    navigationTimeout.current = setTimeout(() => {
+      isNavigating.current = false;
+    }, 900);
 
     /*
-     * Smooth scroll.
+     * Smooth scroll
      */
     target.scrollIntoView({
       behavior: "smooth",
@@ -316,7 +247,7 @@ export default function Navbar() {
     });
 
     /*
-     * Update URL.
+     * Update URL
      */
     window.history.replaceState(
       null,
@@ -367,10 +298,7 @@ export default function Navbar() {
           <motion.a
             href="#home"
             onClick={(e) =>
-              handleNavigation(
-                e,
-                "#home"
-              )
+              handleNavigation(e, "#home")
             }
             className="
               group
@@ -390,12 +318,7 @@ export default function Navbar() {
             }}
             transition={{
               duration: 0.7,
-              ease: [
-                0.22,
-                1,
-                0.36,
-                1,
-              ],
+              ease: [0.22, 1, 0.36, 1],
             }}
           >
             {/* Logo */}
@@ -439,8 +362,6 @@ export default function Navbar() {
                   to-transparent
                 "
               />
-
-             
             </motion.div>
 
             {/* Name */}
@@ -464,9 +385,7 @@ export default function Navbar() {
                   tracking-[0.22em]
                   text-white/35
                 "
-              >
-              
-              </div>
+              />
             </div>
           </motion.a>
 
@@ -475,12 +394,8 @@ export default function Navbar() {
           ================================================== */}
 
           <nav
-            onMouseMove={
-              handleDockMouseMove
-            }
-            onMouseLeave={
-              handleDockMouseLeave
-            }
+            onMouseMove={handleDockMouseMove}
+            onMouseLeave={handleDockMouseLeave}
             className="
               absolute
               left-1/2
@@ -502,320 +417,210 @@ export default function Navbar() {
               shadow-[0_12px_40px_rgba(0,0,0,0.35)]
             "
           >
-            {navItems.map(
-              (item, index) => {
-                const id =
-                  item.href.replace(
-                    "#",
-                    ""
-                  );
+            {navItems.map((item, index) => {
+              const id = item.href.replace("#", "");
 
-                const isActive =
-                  activeSection === id;
+              const isActive =
+                activeSection === id;
 
-                const scale =
-                  getItemScale(index);
+              const scale =
+                getItemScale(index);
 
-                return (
-                  <motion.a
-                    key={item.href}
-                    ref={(element) => {
-                      itemRefs.current[
-                        index
-                      ] = element;
-                    }}
-                    href={item.href}
-                    onClick={(e) =>
-                      handleNavigation(
-                        e,
-                        item.href
-                      )
-                    }
+              return (
+                <motion.a
+                  key={item.href}
+                  ref={(element) => {
+                    itemRefs.current[index] =
+                      element;
+                  }}
+                  href={item.href}
+                  onClick={(e) =>
+                    handleNavigation(
+                      e,
+                      item.href
+                    )
+                  }
+                  className="
+                    group
+                    relative
+                    flex
+                    h-[38px]
+                    items-center
+                    justify-center
+                    rounded-full
+                    px-4
+                    text-[12px]
+                    font-medium
+                    outline-none
+                    origin-bottom
+                  "
+                  animate={{
+                    scale,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 420,
+                    damping: 24,
+                    mass: 0.55,
+                  }}
+                  whileTap={{
+                    scale: Math.max(
+                      scale - 0.08,
+                      0.92
+                    ),
+                  }}
+                >
+                  {/* HOVER BACKGROUND */}
+
+                  <motion.span
                     className="
-                      group
-                      relative
-                      flex
-                      h-[38px]
-                      items-center
-                      justify-center
+                      absolute
+                      inset-0
                       rounded-full
-                      px-4
-                      text-[12px]
-                      font-medium
-                      outline-none
-                      origin-bottom
                     "
                     animate={{
-                      scale,
+                      backgroundColor:
+                        isActive
+                          ? "rgba(139,92,246,0.11)"
+                          : hoveredIndex === index
+                            ? "rgba(139,92,246,0.10)"
+                            : "rgba(139,92,246,0)",
                     }}
                     transition={{
-                      type: "spring",
-                      stiffness: 420,
-                      damping: 24,
-                      mass: 0.55,
+                      duration: 0.18,
                     }}
-                    whileTap={{
-                      scale:
-                        Math.max(
-                          scale - 0.08,
-                          0.92
-                        ),
-                    }}
-                  >
-                    {/* =====================================
-                        HOVER BACKGROUND
-                    ====================================== */}
+                  />
 
+                  {/* ACTIVE BORDER */}
+
+                  {isActive && (
                     <motion.span
                       className="
                         absolute
                         inset-0
                         rounded-full
+                        border
+                        border-violet-400/20
                       "
+                      initial={{
+                        opacity: 0,
+                        scale: 0.9,
+                      }}
                       animate={{
-                        backgroundColor:
-                          isActive
-                            ? "rgba(139,92,246,0.11)"
-                            : hoveredIndex ===
-                                index
-                              ? "rgba(139,92,246,0.10)"
-                              : "rgba(139,92,246,0)",
+                        opacity: 1,
+                        scale: 1,
                       }}
                       transition={{
-                        duration: 0.18,
+                        duration: 0.2,
                       }}
                     />
+                  )}
 
-                    {/* =====================================
-                        ACTIVE BORDER
-                    ====================================== */}
+                  {/* TEXT */}
 
-                    {isActive && (
-                      <motion.span
-                        className="
-                          absolute
-                          inset-0
-                          rounded-full
-                          border
-                          border-violet-400/20
-                        "
-                        initial={{
-                          opacity: 0,
-                          scale: 0.9,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          scale: 1,
-                        }}
-                        transition={{
-                          duration: 0.2,
-                        }}
-                      />
-                    )}
+                  <motion.span
+                    className="
+                      relative
+                      z-10
+                      whitespace-nowrap
+                    "
+                    animate={{
+                      color: isActive
+                        ? "#ffffff"
+                        : hoveredIndex === index
+                          ? "#ffffff"
+                          : "rgba(255,255,255,0.45)",
 
-                    {/* =====================================
-                        TEXT
-                    ====================================== */}
+                      textShadow:
+                        isActive ||
+                        hoveredIndex === index
+                          ? "0 0 12px rgba(167,139,250,0.55)"
+                          : "0 0 0px rgba(167,139,250,0)",
+                    }}
+                    transition={{
+                      duration: 0.16,
+                    }}
+                  >
+                    {item.label}
+                  </motion.span>
 
+                  {/* ACTIVE UNDERLINE */}
+
+                  {isActive && (
                     <motion.span
                       className="
-                        relative
-                        z-10
-                        whitespace-nowrap
+                        absolute
+                        bottom-[3px]
+                        left-1/2
+                        h-[2px]
+                        -translate-x-1/2
+                        rounded-full
+                        bg-gradient-to-r
+                        from-violet-400
+                        via-fuchsia-300
+                        to-violet-400
                       "
+                      initial={{
+                        width: 0,
+                        opacity: 0,
+                      }}
                       animate={{
-                        color: isActive
-                          ? "#ffffff"
-                          : hoveredIndex ===
-                              index
-                            ? "#ffffff"
-                            : "rgba(255,255,255,0.45)",
-
-                        textShadow:
-                          isActive ||
-                          hoveredIndex ===
-                            index
-                            ? "0 0 12px rgba(167,139,250,0.55)"
-                            : "0 0 0px rgba(167,139,250,0)",
+                        width: 22,
+                        opacity: 1,
                       }}
                       transition={{
-                        duration: 0.16,
+                        duration: 0.25,
+                        ease: [
+                          0.22,
+                          1,
+                          0.36,
+                          1,
+                        ],
                       }}
-                    >
-                      {item.label}
-                    </motion.span>
+                      style={{
+                        boxShadow:
+                          "0 0 10px rgba(167,139,250,0.85)",
+                      }}
+                    />
+                  )}
 
-                    {/* =====================================
-                        ACTIVE UNDERLINE
-                    ====================================== */}
+                  {/* HOVER GLOW */}
 
-                    {isActive && (
-                      <motion.span
-                        className="
-                          absolute
-                          bottom-[3px]
-                          left-1/2
-                          h-[2px]
-                          -translate-x-1/2
-                          rounded-full
-                          bg-gradient-to-r
-                          from-violet-400
-                          via-fuchsia-300
-                          to-violet-400
-                        "
-                        initial={{
-                          width: 0,
-                          opacity: 0,
-                        }}
-                        animate={{
-                          width: 22,
-                          opacity: 1,
-                        }}
-                        transition={{
-                          duration: 0.25,
-                          ease: [
-                            0.22,
-                            1,
-                            0.36,
-                            1,
-                          ],
-                        }}
-                        style={{
-                          boxShadow:
-                            "0 0 10px rgba(167,139,250,0.85)",
-                        }}
-                      />
-                    )}
-
-                    {/* =====================================
-                        HOVER GLOW
-                    ====================================== */}
-
-                    {hoveredIndex ===
-                      index && (
-                      <motion.span
-                        className="
-                          pointer-events-none
-                          absolute
-                          bottom-[-8px]
-                          left-1/2
-                          h-[10px]
-                          w-8
-                          -translate-x-1/2
-                          rounded-full
-                          bg-violet-500/25
-                          blur-[7px]
-                        "
-                        initial={{
-                          opacity: 0,
-                          scaleX: 0.5,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          scaleX: 1,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          scaleX: 0.5,
-                        }}
-                        transition={{
-                          duration: 0.15,
-                        }}
-                      />
-                    )}
-                  </motion.a>
-                );
-              }
-            )}
+                  {hoveredIndex === index && (
+                    <motion.span
+                      className="
+                        pointer-events-none
+                        absolute
+                        bottom-[-8px]
+                        left-1/2
+                        h-[10px]
+                        w-8
+                        -translate-x-1/2
+                        rounded-full
+                        bg-violet-500/25
+                        blur-[7px]
+                      "
+                      initial={{
+                        opacity: 0,
+                        scaleX: 0.5,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scaleX: 1,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scaleX: 0.5,
+                      }}
+                      transition={{
+                        duration: 0.15,
+                      }}
+                    />
+                  )}
+                </motion.a>
+              );
+            })}
           </nav>
-
-          {/* =================================================
-              LET'S TALK
-          ================================================== */}
-
-          <motion.a
-            href="#contact"
-            onClick={(e) =>
-              handleNavigation(
-                e,
-                "#contact"
-              )
-            }
-            className="
-              group
-              relative
-              z-30
-              hidden
-              sm:flex
-              items-center
-              gap-2
-              overflow-hidden
-              rounded-full
-              border
-              border-white/[0.10]
-              bg-white/[0.035]
-              px-4
-              py-2.5
-              text-[11px]
-              font-medium
-              text-white/70
-              backdrop-blur-xl
-            "
-            initial={{
-              opacity: 0,
-              x: 20,
-            }}
-            animate={{
-              opacity: 1,
-              x: 0,
-            }}
-            transition={{
-              duration: 0.7,
-              ease: [
-                0.22,
-                1,
-                0.36,
-                1,
-              ],
-            }}
-            whileHover={{
-              scale: 1.04,
-              color: "#ffffff",
-              borderColor:
-                "rgba(167,139,250,0.45)",
-              backgroundColor:
-                "rgba(139,92,246,0.07)",
-              boxShadow:
-                "0 0 25px rgba(139,92,246,0.16)",
-            }}
-            whileTap={{
-              scale: 0.95,
-            }}
-          >
-            <span className="relative z-10">
-              Let's Talk
-            </span>
-
-            <motion.span
-              className="
-                relative
-                z-10
-                text-violet-300/70
-              "
-              animate={{
-                x: [0, 3, 0],
-                y: [0, -2, 0],
-              }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                repeatDelay: 1,
-                ease: "easeInOut",
-              }}
-            >
-              ↗
-            </motion.span>
-          </motion.a>
         </div>
 
         {/* =================================================
@@ -842,9 +647,7 @@ export default function Navbar() {
           }}
           transition={{
             duration: 3,
-            repeat: isScrolled
-              ? 0
-              : Infinity,
+            repeat: isScrolled ? 0 : Infinity,
             ease: "easeInOut",
           }}
         />
@@ -873,9 +676,7 @@ export default function Navbar() {
           }}
           transition={{
             duration: 4,
-            repeat: isScrolled
-              ? 0
-              : Infinity,
+            repeat: isScrolled ? 0 : Infinity,
             ease: "easeInOut",
           }}
         />
@@ -912,124 +713,118 @@ export default function Navbar() {
             shadow-[0_15px_45px_rgba(0,0,0,0.5)]
           "
         >
-          {navItems.map(
-            (item, index) => {
-              const id =
-                item.href.replace(
-                  "#",
-                  ""
-                );
+          {navItems.map((item) => {
+            const id =
+              item.href.replace("#", "");
 
-              const isActive =
-                activeSection === id;
+            const isActive =
+              activeSection === id;
 
-              return (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) =>
-                    handleNavigation(
-                      e,
-                      item.href
-                    )
-                  }
-                  className="
-                    relative
-                    shrink-0
-                    overflow-hidden
-                    rounded-full
-                    px-3
-                    py-2
-                    text-[10px]
-                    font-medium
-                  "
-                  whileTap={{
-                    scale: 0.88,
-                  }}
-                >
-                  {/* Mobile active background */}
+            return (
+              <motion.a
+                key={item.href}
+                href={item.href}
+                onClick={(e) =>
+                  handleNavigation(
+                    e,
+                    item.href
+                  )
+                }
+                className="
+                  relative
+                  shrink-0
+                  overflow-hidden
+                  rounded-full
+                  px-3
+                  py-2
+                  text-[10px]
+                  font-medium
+                "
+                whileTap={{
+                  scale: 0.88,
+                }}
+              >
+                {/* Mobile active background */}
 
-                  {isActive && (
-                    <motion.span
-                      className="
-                        absolute
-                        inset-0
-                        rounded-full
-                        border
-                        border-violet-400/20
-                        bg-gradient-to-r
-                        from-violet-500/[0.13]
-                        to-fuchsia-500/[0.10]
-                      "
-                      initial={{
-                        opacity: 0,
-                        scale: 0.9,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      transition={{
-                        duration: 0.2,
-                      }}
-                    />
-                  )}
-
-                  {/* Mobile text */}
-
+                {isActive && (
                   <motion.span
                     className="
-                      relative
-                      z-10
-                      block
+                      absolute
+                      inset-0
+                      rounded-full
+                      border
+                      border-violet-400/20
+                      bg-gradient-to-r
+                      from-violet-500/[0.13]
+                      to-fuchsia-500/[0.10]
                     "
+                    initial={{
+                      opacity: 0,
+                      scale: 0.9,
+                    }}
                     animate={{
-                      color: isActive
-                        ? "#ffffff"
-                        : "rgba(255,255,255,0.4)",
-
-                      textShadow:
-                        isActive
-                          ? "0 0 10px rgba(167,139,250,0.6)"
-                          : "0 0 0px rgba(167,139,250,0)",
+                      opacity: 1,
+                      scale: 1,
                     }}
                     transition={{
-                      duration: 0.15,
+                      duration: 0.2,
                     }}
-                  >
-                    {item.label}
-                  </motion.span>
+                  />
+                )}
 
-                  {/* Mobile underline */}
+                {/* Mobile text */}
 
-                  {isActive && (
-                    <motion.span
-                      className="
-                        absolute
-                        bottom-[2px]
-                        left-1/2
-                        h-[1.5px]
-                        -translate-x-1/2
-                        rounded-full
-                        bg-violet-300
-                      "
-                      initial={{
-                        width: 0,
-                        opacity: 0,
-                      }}
-                      animate={{
-                        width: 14,
-                        opacity: 1,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
-                    />
-                  )}
-                </motion.a>
-              );
-            }
-          )}
+                <motion.span
+                  className="
+                    relative
+                    z-10
+                    block
+                  "
+                  animate={{
+                    color: isActive
+                      ? "#ffffff"
+                      : "rgba(255,255,255,0.4)",
+
+                    textShadow: isActive
+                      ? "0 0 10px rgba(167,139,250,0.6)"
+                      : "0 0 0px rgba(167,139,250,0)",
+                  }}
+                  transition={{
+                    duration: 0.15,
+                  }}
+                >
+                  {item.label}
+                </motion.span>
+
+                {/* Mobile underline */}
+
+                {isActive && (
+                  <motion.span
+                    className="
+                      absolute
+                      bottom-[2px]
+                      left-1/2
+                      h-[1.5px]
+                      -translate-x-1/2
+                      rounded-full
+                      bg-violet-300
+                    "
+                    initial={{
+                      width: 0,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      width: 14,
+                      opacity: 1,
+                    }}
+                    transition={{
+                      duration: 0.25,
+                    }}
+                  />
+                )}
+              </motion.a>
+            );
+          })}
         </div>
       </div>
     </>
