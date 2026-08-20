@@ -1,30 +1,65 @@
-"use client"
+"use client";
 
-import { Suspense, lazy } from "react"
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 
-const Spline = lazy(() => import("@splinetool/react-spline"))
+const Spline = lazy(() => import("@splinetool/react-spline"));
 
 interface SplineSceneProps {
-  scene: string
-  className?: string
+  scene: string;
+  className?: string;
 }
 
 export function SplineScene({
   scene,
-  className,
+  className = "",
 }: SplineSceneProps) {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex h-full w-full items-center justify-center">
-          <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-        </div>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const element = containerRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: "200px",
+        threshold: 0,
       }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className={`relative h-full w-full ${className}`}
     >
-      <Spline
-        scene={scene}
-        className={className}
-      />
-    </Suspense>
-  )
+      {shouldLoad ? (
+        <Suspense
+          fallback={
+            <div className="absolute inset-0 h-full w-full" />
+          }
+        >
+          <Spline
+            scene={scene}
+            className="absolute inset-0 h-full w-full"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </Suspense>
+      ) : null}
+    </div>
+  );
 }

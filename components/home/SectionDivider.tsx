@@ -16,28 +16,47 @@ export default function SectionDivider() {
   return (
     <section className="relative w-full overflow-hidden bg-black py-7 md:py-9">
       {/* Soft ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/5 blur-3xl" />
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          h-20
+          w-[60%]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-cyan-400/[0.03]
+          blur-[45px]
+        "
+      />
 
-      {/* Moving track */}
+      {/* Moving text */}
       <div className="relative flex w-full overflow-hidden">
         <motion.div
-          className="flex min-w-max"
+          className="flex shrink-0 items-center"
           animate={{
-            x: ["0%", "-50%"],
+            x: ["0px", "-50%"],
           }}
           transition={{
-            duration: 24,
+            duration: 30,
             repeat: Infinity,
             ease: "linear",
           }}
+          style={{
+            willChange: "transform",
+            backfaceVisibility: "hidden",
+            WebkitFontSmoothing: "antialiased",
+          }}
         >
-          {/* GROUP 1 */}
+          {/* SET 1 */}
           <div className="flex shrink-0 items-center">
             <DividerText />
             <DividerText />
           </div>
 
-          {/* GROUP 2 */}
+          {/* SET 2 */}
           <div className="flex shrink-0 items-center">
             <DividerText />
             <DividerText />
@@ -50,26 +69,33 @@ export default function SectionDivider() {
 
 function DividerText() {
   return (
-    <div className="flex items-center px-8 md:px-12">
+    <div className="flex shrink-0 items-center px-8 md:px-12">
       <span
         className="
-          text-sm
-          font-semibold
-          tracking-[0.35em]
-          text-transparent
           bg-gradient-to-r
           from-cyan-300
           via-white
           to-purple-400
           bg-clip-text
+          text-sm
+          font-semibold
+          tracking-[0.35em]
+          text-transparent
           md:text-base
         "
       >
         {text}
       </span>
 
-      {/* Decorative star */}
-      <span className="ml-8 text-cyan-300/80 text-sm md:ml-12 md:text-base">
+      <span
+        className="
+          ml-8
+          text-sm
+          text-cyan-300/80
+          md:ml-12
+          md:text-base
+        "
+      >
         ✦
       </span>
     </div>
